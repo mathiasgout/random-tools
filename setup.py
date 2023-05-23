@@ -10,5 +10,5 @@ setup(
             "firebase-admin==6.1.0"
         ]
     },
-    python_requires="3.9"
+    python_requires="=3.9"
 )
