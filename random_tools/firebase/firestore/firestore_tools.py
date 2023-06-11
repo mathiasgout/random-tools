@@ -1,6 +1,10 @@
+import logging
 from typing import Union, List
 
 from firebase_admin import firestore
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_client_firestore():
@@ -27,7 +31,9 @@ def get_document(collection_name: str, document_name: str) -> Union[None, dict]:
     doc_ref = client_firestore.collection(collection_name).document(document_name)
     doc = doc_ref.get()
     if doc.exists:
+        logger.info(f"[Firestore READ] (path={doc_ref.path}) (exists=true) (read=1)")
         return doc.to_dict()
+    logger.info(f"[Firestore READ] (path={doc_ref.path}) (exists=false) (read=1)")
     return None
 
 
@@ -53,6 +59,7 @@ def get_documents(
     docs_list = []
     for doc in docs:
         docs_list.append(doc.to_dict())
+    logger.info(f"[Firestore READ] (collection={collection_name}) (condition={condition}) (read={len(docs_list)})")
     return docs_list
 
 
@@ -90,8 +97,10 @@ def create_document(
             client_firestore.collection(collection_name).document(document_name).set(
                 kwargs
             )
+        logger.info(f"[Firestore WRITE] (path={collection_name}/{document_name}) (fields={len(kwargs)}) (write=1)")
     else:
         client_firestore.collection(collection_name).add(kwargs)
+        logger.info(f"[Firestore WRITE] (path={collection_name}/__random_token__) (fields={len(kwargs)}) (write=1)")
     return kwargs
 
 
@@ -104,3 +113,4 @@ def delete_document(collection_name: str, document_name: str) -> None:
     """
     client_firestore = get_client_firestore()
     client_firestore.collection(collection_name).document(document_name).delete()
+    print(f"[Firestore DELETE] (path={collection_name}/{document_name}) (delete=1)")

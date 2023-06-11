@@ -3,5 +3,6 @@ venv
 __pycache__
 .pytest_cache
 
+gcp_credentials.json
 things.py
 .coverage

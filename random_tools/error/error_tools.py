@@ -17,7 +17,7 @@ def exception(logger: logging.Logger) -> None:
             try:
                 return func(*args, **kwargs)
             except Exception as e:
-                issue = f"Exception in '{func.__module__}.{func.__name__}': '{e.__class__.__name__}' ({e})"
+                issue = f"Exception in {func.__module__}.{func.__name__}: {e.__class__.__name__} ({e})"
                 logger.error(issue)
                 raise
 
@@ -39,7 +39,7 @@ def exception_async(logger: logging.Logger) -> None:
             try:
                 return await func(*args, **kwargs)
             except Exception as e:
-                issue = f"Exception in '{func.__module__}.{func.__name__}': '{e.__class__.__name__}' ({e})"
+                issue = f"Exception in {func.__module__}.{func.__name__}: {e.__class__.__name__} ({e})"
                 logger.error(issue)
                 raise
 
@@ -76,7 +76,7 @@ def retry(
                     return f(*args, **kwargs)
                 except ExceptionToCheck as e:
                     msg = (
-                        f"Retrying in {mdelay} seconds: '{e.__class__.__name__}' ({e})"
+                        f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
                     )
                     if logger:
                         logger.warning(msg)
@@ -120,7 +120,7 @@ def retry_async(
                     return await f(*args, **kwargs)
                 except ExceptionToCheck as e:
                     msg = (
-                        f"Retrying in {mdelay} seconds: '{e.__class__.__name__}' ({e})"
+                        f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
                     )
                     if logger:
                         logger.warning(msg)
