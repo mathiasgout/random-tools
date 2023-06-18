@@ -75,9 +75,7 @@ def retry(
                 try:
                     return f(*args, **kwargs)
                 except ExceptionToCheck as e:
-                    msg = (
-                        f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
-                    )
+                    msg = f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
                     if logger:
                         logger.warning(msg)
                     else:
@@ -119,9 +117,7 @@ def retry_async(
                 try:
                     return await f(*args, **kwargs)
                 except ExceptionToCheck as e:
-                    msg = (
-                        f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
-                    )
+                    msg = f"Retrying in {mdelay} seconds: {e.__class__.__name__} ({e})"
                     if logger:
                         logger.warning(msg)
                     else:
