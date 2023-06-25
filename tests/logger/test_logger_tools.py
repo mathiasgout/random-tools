@@ -4,5 +4,6 @@ import logging
 
 
 def test_get_logger_TYPE():
-    logger = logger_tools.get_logger(logger_name="logger_name")
-    assert type(logger) == logging.Logger
+    loggers = logger_tools.get_loggers(logger_names=["logger_name"])
+    assert type(loggers) == list    
+    assert type(loggers[0]) == logging.Logger
