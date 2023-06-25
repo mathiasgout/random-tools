@@ -6,22 +6,25 @@ from pathlib import Path
 from typing import Union
 
 
-def get_logger(
-    logger_name: str, stream: bool = True, file_path: Union[str, None] = None
-) -> logging.Logger:
-    """Create a logger
+def get_loggers(
+    logger_names: list[str], stream: bool = True, file_path: Union[str, None] = None
+) -> list[logging.Logger]:
+    """Create logger(s)
 
     Args:
-        logger_name (str): logger name
+        logger_names (list[str]): list of logger names
         stream (bool, optional): to add a StreamHandler. Defaults to True.
         file_path (Union[str, None], optional): path of file for the FileHandler. Defaults to None.
 
     Returns:
-        logging.Logger: the logger
+        list[logging.Logger]: list of loggers
     """
     # Création du logger
-    logger = logging.getLogger(logger_name)
-    logger.setLevel(logging.DEBUG)  # Modification du niveau de criticité du logger
+    loggers = []
+    for logger_name in logger_names:
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging.DEBUG)  # Modification du niveau de criticité du logger
+        loggers.append(logger)
 
     # Création d'un formatteur
     logging.Formatter.converter = time.gmtime
@@ -40,7 +43,8 @@ def get_logger(
         # Création d'un StreamHandler pour afficher la log dans la console
         stream_handler = logging.StreamHandler()
         stream_handler.setFormatter(formatter)  # Liaison le formatteur au handler
-        logger.addHandler(stream_handler)
+        for logger in loggers:
+            logger.addHandler(stream_handler)
 
     if file_path:
         # Create log folder
@@ -49,6 +53,7 @@ def get_logger(
 
         file_handler = logging.FileHandler(file_path)
         file_handler.setFormatter(formatter)  # Liaison le formatteur au handler
-        logger.addHandler(file_handler)
+        for logger in loggers:
+            logger.addHandler(file_handler)
 
-    return logger
+    return loggers
